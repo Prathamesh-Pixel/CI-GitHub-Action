@@ -1,0 +1,15 @@
+name: DevSecOps CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-scan:
+    runs-on: self-hosted # Directs the job to your t3.medium runner
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        
+      - name: Build with Maven
+        run: mvn clean package # Requirement 3: Build application
