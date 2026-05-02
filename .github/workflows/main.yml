@@ -4,12 +4,16 @@ on:
   push:
     branches: [ "main" ]
 
+# This fixes the warning in your screenshot
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build-and-scan:
-    runs-on: self-hosted # Directs the job to your t3.medium runner
+    runs-on: [self-hosted] # Directs the job to your t3.medium runner
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        
+
       - name: Build with Maven
         run: mvn clean package # Requirement 3: Build application
