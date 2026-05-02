@@ -38,3 +38,11 @@ steps:
         run: snyk test --severity-threshold=high
         env:
           SNYK_TOKEN: ${{ 78f37076-82b4-434a-b952-33e2767e13d2 }}
+
+# Requirement: Docker Build and Scan
+      - name: Build Docker Image
+        run: docker build -t my-app:latest .
+
+      - name: Trivy Image Scan
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image --severity HIGH,CRITICAL my-app:latest
