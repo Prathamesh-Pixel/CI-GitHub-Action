@@ -25,15 +25,14 @@ jobs:
             -Dsonar.projectKey=Prathamesh-Pixel_CI-GitHub-Action \
             -Dsonar.organization=prathamesh-pixel \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.cache.bootstrap=false
+            -Dsonar.token=${{ secrets.SONAR_SECRET }}
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Snyk Open Source Scan
         run: snyk test --severity-threshold=high
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          SNYK_TOKEN: ${{ secrets.SNYK_SECRET }}
 
       - name: Build Docker Image
         run: docker build -t my-app:latest .
