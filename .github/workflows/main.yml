@@ -4,42 +4,31 @@ on:
   push:
     branches: [ "main" ]
 
-# This fixes the warning in your screenshot
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build-and-scan:
-    runs-on: [self-hosted] # Directs the job to your t3.medium runner
+    runs-on: [self-hosted]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-
-      - name: Build with Maven
-        run: mvn clean package # Requirement 3: Build application
-
-steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Required for SonarCloud to analyze history
+          fetch-depth: 0 
 
       - name: Build with Maven
         run: mvn clean package
 
-      # ADD THIS: SAST Scan (Requirement 5)
       - name: SonarCloud Scan
         run: mvn sonar:sonar -Dsonar.projectKey=Prathamesh-Pixel_CI-GitHub-Action -Dsonar.organization=prathamesh-pixel
         env:
-          SONAR_TOKEN: ${{ 69f23ca1dad1dfcd96e4cc5acf765f45b81c8129 }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Reference the secret name here
 
-      # ADD THIS: Vulnerability Scan (Snyk)
       - name: Snyk Open Source Scan
         run: snyk test --severity-threshold=high
         env:
-          SNYK_TOKEN: ${{ 78f37076-82b4-434a-b952-33e2767e13d2 }}
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # Reference the secret name here
 
-# Requirement: Docker Build and Scan
       - name: Build Docker Image
         run: docker build -t my-app:latest .
 
