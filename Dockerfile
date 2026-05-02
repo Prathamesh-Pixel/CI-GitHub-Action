@@ -1,6 +1,8 @@
 # Stage 1: Runtime environment
 FROM eclipse-temurin:17-jre-alpine
 
+RUN apk update && apk upgrade --no-cache
+
 # Set the working directory
 WORKDIR /app
 
